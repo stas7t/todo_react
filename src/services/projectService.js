@@ -38,14 +38,14 @@ function create(project) {
   return fetch(`${config.apiUrl}/projects`, requestOptions).then(handleResponse);
 }
 
-function update(project) {
+function update(id, project) {
   const requestOptions = {
     method: 'PUT',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
     body: JSON.stringify(project)
   };
 
-  return fetch(`${config.apiUrl}/projects/${project.id}`, requestOptions).then(handleResponse);
+  return fetch(`${config.apiUrl}/projects/${id}`, requestOptions).then(handleResponse);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript

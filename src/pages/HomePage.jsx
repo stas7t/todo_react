@@ -1,10 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { projectActions } from '../actions';
+import { ProjectContainer } from '../containers';
 
 class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: '',
+      submitted: false
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleDeleteProject = this.handleDeleteProject.bind(this);
+  }
+
   componentDidMount() {
     this.props.dispatch(projectActions.getAll());
   }
@@ -13,8 +28,32 @@ class HomePage extends React.Component {
     return () => this.props.dispatch(projectActions.delete(id));
   }
 
+  handleChange(e) {
+    const { value } = e.target;
+    this.setState({ name: value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    this.setState({ submitted: true });
+    const { name } = this.state;
+    const { dispatch } = this.props;
+    if (name) {
+      dispatch(projectActions.create(name));
+    }
+  }
+
+  handleCancel(e) {
+    e.preventDefault();
+
+    this.setState({ name: '', submitted: false });
+  }
+
   render() {
     const { projects } = this.props;
+    const { name } = this.state;
+
     return (
       <div>
         <h4>Projects</h4>
@@ -23,9 +62,9 @@ class HomePage extends React.Component {
             <span><i className="fa fa-refresh fa-spin fa-3x fa-fw" /></span>
           </div>
         }
-        {projects.items &&
+        { projects.items &&
           <div>
-            {projects.items.map((project) =>
+            { projects.items.map((project) =>
               // <li key={project.id}>
               //   {project.name}
               //   {
@@ -34,66 +73,22 @@ class HomePage extends React.Component {
               //         : <span> - <a onClick={this.handleDeleteProject(project.id)}>Delete</a></span>
               //   }
               // </li>
-              <div key={project.id}>
-                <section className="mb-2">
-                  <div className="container ">
-                    <div className="row project">
-                      <div className="col py-2">
-                        <a data-toggle="collapse" href={`#collapseTasks-${project.id}`} aria-expanded="true" aria-controls={`#collapseTasks-${project.id}`} className="nodecor">
-                          <i className="fa fa-caret-right fa-lg" aria-hidden="true" />
-                          <span className="pl-2 text-secondary font-weight-bold">{project.name}</span>
-                        </a>
-                      </div>
-                      <div className="p-2 project-actions">
-                        <a ><i className="fa fa-pencil fa-lg" aria-hidden="true" /></a>
-                        <a data-toggle="modal" data-target={`#confirmDeletionModal-${project.id}`}><i className="fa fa-trash-o fa-lg" aria-hidden="true" /></a>
-                      </div>
-                    </div>
-                  </div>
-                  <div id={`collapseTasks-${project.id}`} className="">
-                    <ul>
-                      <li>AAA</li>
-                      <li>BBB</li>
-                    </ul>
-                  </div>
-                  {/* <div ng-if="projectDetail.errors" className="alert alert-danger" role="alert">
-                    {'{'}{'{'} projectDetail.errors.message {'}'}{'}'}
-                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">×</span>
-                    </button>
-                  </div> */}
-                  <form ng-switch-when="true">
-                    <div className="form-group">
-                      <input type="text" className="form-control rounded-0" autoFocus required />
-                    </div>
-                    <div className="form-group">
-                      <button className="btn btn-primary" type="submit">Save</button>
-                      <button className="btn btn-light" type="button">Cancel</button>
-                    </div>
-                  </form>
-                </section>
-              </div>
+              <ProjectContainer key={project.id} {...project} />
             )}
           </div>
         }
-        {/* <div ng-if="projects.errors" className="alert alert-danger" role="alert">
-          {'{'}{'{'} projects.errors.message {'}'}{'}'}
-          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div> */}
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <input type="text" className="form-control rounded-0" placeholder="Enter Project Name ..." required />
+            <input type="text" className="form-control rounded-0" onChange={this.handleChange} placeholder="Enter Project Name ..." required />
           </div>
-          <div className="form-group">
-            <button className="btn btn-primary" type="submit">Create Project</button>
-            <button className="btn btn-ligth" type="button">Cancel</button>
-          </div>
+          { name.length > 0 &&
+            <div className="form-group">
+              <button className="btn btn-primary" type="submit">Create Project</button>
+              <button className="btn btn-ligth" type="button" onClick={this.handleCancelEditing}>Cancel</button>
+            </div>
+          }
         </form>
       </div>
-
-
 
     // <div className="col-md-6 col-md-offset-3">
     //   <h3>All projects:</h3>
