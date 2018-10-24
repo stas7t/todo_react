@@ -1,7 +1,5 @@
 import { projectConstants } from '../constants';
 import { projectService } from '../services';
-// import { alertActions } from '.';
-// import { history } from '../helpers';
 
 export const projectActions = {
   getAll,

@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { projectActions } from '../actions';
@@ -65,14 +64,6 @@ class HomePage extends React.Component {
         { projects.items &&
           <div>
             { projects.items.map((project) =>
-              // <li key={project.id}>
-              //   {project.name}
-              //   {
-              //     project.deleting ? <em> - Deleting...</em>
-              //       : project.deleteError ? <span className="text-danger"> - ERROR: {project.deleteError}</span>
-              //         : <span> - <a onClick={this.handleDeleteProject(project.id)}>Delete</a></span>
-              //   }
-              // </li>
               <ProjectContainer key={project.id} {...project} />
             )}
           </div>
@@ -89,29 +80,6 @@ class HomePage extends React.Component {
           }
         </form>
       </div>
-
-    // <div className="col-md-6 col-md-offset-3">
-    //   <h3>All projects:</h3>
-    //   {projects.loading && <em>Loading projects...</em>}
-    //   {projects.error && <span className="text-danger">ERROR: {projects.error}</span>}
-    //   {projects.items &&
-    //     <ul>
-    //       {projects.items.map((project) =>
-    //         <li key={project.id}>
-    //           {project.name}
-    //           {
-    //             project.deleting ? <em> - Deleting...</em>
-    //               : project.deleteError ? <span className="text-danger"> - ERROR: {project.deleteError}</span>
-    //                 : <span> - <a onClick={this.handleDeleteProject(project.id)}>Delete</a></span>
-    //           }
-    //         </li>
-    //       )}
-    //     </ul>
-    //   }
-    //   <p>
-    //     <Link to="/login">Logout</Link>
-    //   </p>
-    // </div>
     );
   }
 }
