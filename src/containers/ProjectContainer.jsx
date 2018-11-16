@@ -1,8 +1,10 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { projectActions } from '../actions';
+
+import { TaskContainer } from '../containers';
+import { AddTaskForm } from '../components';
 
 class ProjectContainer extends React.Component {
   constructor(props) {
@@ -82,67 +84,14 @@ class ProjectContainer extends React.Component {
         }
 
         { tasks &&
-          <div id={`collapseTasks-${id}`} className="">
+          <div>
             { tasks.map((task) =>
-              <section key={task.id}>
-                <div className="row task mx-0">
-                  <div className="px-2 py-1 task-actions">
-                    <div>
-                      <a><i className="fa fa-long-arrow-up" aria-hidden="true" /></a>
-                    </div>
-                    <div>
-                      <a><i className="fa fa-long-arrow-down" aria-hidden="true" /></a>
-                    </div>
-                  </div>
-                  <div className="px-1 py-2">
-                    <input type="checkbox"/>
-                  </div>
-                  <div className="col px-1 py-2">
-                    <div>
-                      <span>{task.name}</span>
-                    </div>
-                    <div className="deadline text-smaller">
-                      {task.deadline}
-                    </div>
-                  </div>
-                  <div className="p-2 task-actions">
-                    <span>{99}</span>
-                    <a><i className="fa fa-comment fa-lg" aria-hidden="true" /></a>
-                    <a><i className="fa fa-clock-o fa-lg" aria-hidden="true" /></a>
-                    <a><i className="fa fa-pencil  fa-lg" aria-hidden="true" /></a>
-                    <a><i className="fa fa-trash-o fa-lg" aria-hidden="true" /></a>
-                  </div>
-                </div>
-                {/* Edit task Form */}
-                { false &&
-                  <form name="editTask">
-                    <div className="form-group mt-minus-1">
-                      <input type="text" className="form-control rounded-0" autoFocus required />
-                    </div>
-                    <div className="form-group">
-                      <button className="btn btn-success" type="submit">Save</button>
-                      <button className="btn btn-light" type="button">Cancel</button>
-                    </div>
-                  </form>
-                }
-              </section>
+              <TaskContainer key={task.id} {...task} />
             )}
           </div>
         }
         {/* Add task Form */}
-        { true &&
-          <form>
-            <div className="form-group mt-minus-1">
-              <input type="text" className="form-control rounded-0" placeholder="Enter Task Name ..." required />
-            </div>
-            { false &&
-              <div className="form-group">
-                <button className="btn btn-success" type="submit">Add task</button>
-                <button className="btn btn-ligth" type="button">Cancel</button>
-              </div>
-            }
-          </form>
-        }
+        <AddTaskForm projectId={id} />
 
         {/* Edit project Form */}
         { editing &&
